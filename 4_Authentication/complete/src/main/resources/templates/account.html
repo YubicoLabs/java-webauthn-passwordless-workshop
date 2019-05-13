@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+    <head>
+        <title>Account</title>
+
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+        <meta th:name="_csrf" th:content="${_csrf.token}"/>
+        <meta th:name="_csrf_header" th:content="${_csrf.headerName}"/>
+
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+        <script type="module" src="/lib/fetch/fetch-3.0.0.js"></script>
+        <script src="/lib/base64js/base64js-1.3.0.min.js"></script>
+        <script src="/js/base64url.js"></script>
+        <script src="/js/webauthn.js"></script>
+
+        <sec:authentication property="name" var="username" />
+
+        <script>
+            $(function () {
+                $('#takeAction').hide();
+            });
+
+            function setStatus(statusText) {
+                $('#status').text(statusText);
+            }           
+
+            function submitResponse(url, requestId, response) {
+                console.log('submitResponse', url, requestId, response);
+        
+                var token = $("meta[name='_csrf']").attr("content"); 
+        
+                const body = {
+                    requestId,
+                    credential: response,
+                };
+                console.log('body', JSON.stringify(body));
+                
+                return fetch(url, {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': token
+                    },
+                    body: JSON.stringify(body),
+                }).then(response => response.json())
+                ;
+            }
+        
+            function register() {
+                $('#takeAction').show();
+                const username = '[[${#authentication.getPrincipal().getUsername()}]]';
+                const displayName = '[[${#authentication.getPrincipal().getUsername()}]]';
+                const credentialNickname = $("#inputNickname").val();
+                const requireResidentKey = true;
+        
+                var token = $("meta[name='_csrf']").attr("content"); 
+        
+                return fetch('/register', {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': token
+                    },
+                    body: new URLSearchParams({
+                    username,
+                    displayName,
+                    credentialNickname,
+                    requireResidentKey,
+                    })
+                    
+                })
+                .then(response => response.json())
+                .then(function(request) {
+                    console.log('request succeeded with JSON response', request)
+                    
+                    return webauthn.createCredential(request.publicKeyCredentialCreationOptions)
+                    .then(webauthn.responseToObject)
+                    .then(function (publicKeyCredential) { 
+                        console.log("publicKeyCredential ", publicKeyCredential);
+            
+                        url = '/register/finish';
+                        return submitResponse(url, request.requestId, publicKeyCredential);
+                    })
+                })
+                .then(data => {
+                    if (data && data.success) {
+                        console.log("Success!");
+                        setStatus("Success!");
+                    } else {
+                        console.log("Error!");
+                        setStatus('Error!');
+                    }
+                    $('#takeAction').hide();
+                    console.log(data);
+                    return data;
+                })
+                ;
+            }
+
+            function performAuthentication(username, token) {
+                 return fetch('/authenticate', {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': token
+                    },
+                })
+                .then(response => response.json())
+                .then(function(request) {
+                    console.log('request succeeded with JSON response', request)
+                    
+                    return webauthn.getAssertion(request.publicKeyCredentialRequestOptions)
+                    .then(webauthn.responseToObject)
+                    .then(function (publicKeyCredential) { 
+                        console.log("publicKeyCredential ", publicKeyCredential);
+            
+                        url = '/authenticate/finish';
+                        return submitResponse(url, request.requestId, publicKeyCredential)
+                    })
+                    ;
+                })
+                .then(data => {
+                    if (data && data.success) {
+                        console.log("Success!");
+                        setStatus('Success!');
+                    } else {
+                        console.log("Error!");
+                        setStatus('Error!');
+                    }
+                    $('#takeAction').hide();
+                    return data;
+                })
+                ;
+            }
+        </script>
+    </head>
+    <body>
+        <div class="container">
+            <h1 th:inline="text">Signed in as [[${#httpServletRequest.remoteUser}]]!</h1>
+        </div>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <h4> Security Keys </h4>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th> Nickname </th>
+                                <th> Regestration Time </th>
+                                <th> UserHandle </th>
+                                <th> Credential ID </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:if="${registrations.empty}">
+                                <td colspan="2"> No Security Keys Registered</td>
+                            </tr>
+                            <tr th:each="registration : ${registrations}">
+                                <td><span th:text="${registration.credentialNickname.get()}"> NickName </span></td>
+                                <td><span th:text="${registration.registrationTime}"> Registered </span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="container">
+            <h4>Register a Security Key</h4>
+            <div class="form-inline">
+                <div class="form-group mx-sm-3 mb-2">
+                    <label for="inputNickname" class="sr-only">Nickname</label>
+                    <input type="text" class="form-control" id="inputNickname" placeholder="Nickname">
+                </div>
+                <button onclick="register()" class="btn btn-primary mb-2">Register</button>
+            </div>
+            <p id="status"></p>
+            <div id="takeAction">
+                <p class="text-justify">Please insert and take action on the security key.</p>
+                <div class="spinner-border" role="status">
+                    <span class="sr-only">Loading...</span>
+                </div>
+            </div>
+        </div>
+        <div class="container">
+            <p></p>
+            <form class="form-group" th:action="@{/logout}" method="post">
+                <input class="btn btn-primary" type="submit" value="Sign Out"/>
+            </form>
+        </div>
+    </body>
+</html>

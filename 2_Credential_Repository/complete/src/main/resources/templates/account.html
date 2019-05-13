@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+    <head>
+        <title>Account</title>
+
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    </head>
+    <body>
+        <div class="container">
+            <h1 th:inline="text">Signed in as [[${#httpServletRequest.remoteUser}]]!</h1>
+        </div>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <h4> Security Keys </h4>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th> Nickname </th>
+                                <th> Registered </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:if="${registrations.empty}">
+                                <td colspan="2"> No Security Keys Registered</td>
+                            </tr>
+                            <tr th:each="registration : ${registrations}">
+                                <td><span th:text="${registration.credentialNickname.get()}"> NickName </span></td>
+                                <td><span th:text="${registration.registrationTime}"> Registered </span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="container">
+            <p></p>
+            <form class="form-group" th:action="@{/logout}" method="post">
+                <input class="btn btn-primary" type="submit" value="Sign Out"/>
+            </form>
+        </div>
+    </body>
+</html>

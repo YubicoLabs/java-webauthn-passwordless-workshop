@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+    <head>
+        <title>WebAuthn Example </title>
+
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta name="description" content="">
+        <meta name="author" content="">
+
+        <meta th:name="_csrf" th:content="${_csrf.token}" />
+        <meta th:name="_csrf_header" th:content="${_csrf.headerName}" />
+
+        <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" rel="stylesheet"
+            integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
+        <link href="http://getbootstrap.com/docs/4.0/examples/signin/signin.css" rel="stylesheet" crossorigin="anonymous" />
+
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+        <script type="module" src="/lib/fetch/fetch-3.0.0.js"></script>
+        <script src="/lib/base64js/base64js-1.3.0.min.js"></script>
+        <script src="/js/base64url.js"></script>
+        <script src="/js/webauthn.js"></script>
+
+        <script>
+
+            function submitResponse(url, requestId, response) {
+                console.log('submitResponse', url, requestId, response);
+        
+                var token = $("meta[name='_csrf']").attr("content"); 
+        
+                const body = {
+                    requestId,
+                    credential: response,
+                };
+                console.log('body', JSON.stringify(body));
+                
+                return fetch(url, {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': token
+                    },
+                    body: JSON.stringify(body),
+                }).then(response => response.json());
+                ;
+            }
+
+            function authenticate() {
+                const username = "";
+                const token = $("meta[name='_csrf']").attr("content");
+
+                return fetch('/authenticate', {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': token
+                    },
+                    })  
+                    .then(response => response.json())
+                    .then(function (request) {
+                        console.log('request succeeded with JSON response', request)
+
+                        return webauthn.getAssertion(request.publicKeyCredentialRequestOptions)
+                            .then(webauthn.responseToObject)
+                            .then(function (publicKeyCredential) {
+                                console.log("publicKeyCredential ", publicKeyCredential);
+
+                                url = '/authenticate/finish';
+                                return submitResponse(url, request.requestId, publicKeyCredential);
+                            })
+                            //.then( window.location.href = "/account")
+                        })
+                    .then(data => {
+                        if (data && data.success) {
+                            console.log("Success!");
+                            //TODO setStatus(statusStrings.success);
+                            window.location.href = "/account"
+                        } else {
+                            console.log("Error!");
+                            //TODO setStatus('Error!');
+                        }
+                        console.log(data);
+                        return data;
+                    })
+                    ;
+            }
+
+        </script>
+
+    </head>
+    <body>
+        <div class="container">
+            <div th:if="${param.error}" class="error">
+                Invalid username and password.
+            </div>
+            <div th:if="${param.logout}">
+                You have been logged out.
+            </div>
+            <form class="form-signin" th:action="@{/login}" method="post">
+                <h2 class="form-signin-heading">Please sign in</h2>
+                <p>Example: user / password</p>
+                <p><label for="username" class="sr-only"> User Name : </label>
+                    <input type="text" id="username" name="username" class="form-control" placeholder="user" required
+                    autofocus/> </p>
+                <p><label for="password" class="sr-only"> Password: </label>
+                    <input type="password" id="password" name="password" class="form-control" placeholder="password"
+                    required autofocus/> </p>
+                <p><input class="btn btn-lg btn-primary btn-block" type="submit" value="Sign In"/></p>
+            </form>
+        </div>
+        <div class="container">
+            <h2 class="form-signin-heading">Passwordless sign in</h2>
+            <p>Sign in with your previously registered security key</p>
+            <p><button class="btn btn-lg btn-primary btn-block" onclick="authenticate()">Passwordless Sign in</button><br />
+            </p>
+            <p><a href="/index" th:href="@{/home}">Back to home page</a></p>
+        </div>
+    </body>
+</html>
