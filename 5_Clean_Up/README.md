@@ -17,5 +17,5 @@ _Skip this step if you are using a local dev environment._
 1. If you created a cloud shell storage just for this workshop then you can delete it
 2. Open https://portal.azure.com
 3. Go to Resource groups
-4. Find the cloud-shell-storage resoure group and select it
+4. Find the cloud-shell-storage resource group and select it
 5. Click Delete Resource Group and follow the instructions

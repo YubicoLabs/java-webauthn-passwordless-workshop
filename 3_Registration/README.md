@@ -202,7 +202,7 @@ Let's expose two REST endpoints to start and finish the WebAuthn registration op
 <details>
 <summary><strong>Step by step instructions</strong></summary><p>
 
-1. Create WebAuthnContoller.java
+1. Create WebAuthnController.java
    ```
    echo '' > src/main/java/com/example/demo/WebAuthnController.java
    ```

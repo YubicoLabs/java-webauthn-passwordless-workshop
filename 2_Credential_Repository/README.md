@@ -3,7 +3,7 @@ In this module, you will add a credential repository to the application.
 
 ## Solution Architecture
 
-### Inital web application structure 
+### Initial web application structure 
 
 <details>
 <summary><strong>Expand for overview of existing web app structure</strong></summary><p>
@@ -103,7 +103,7 @@ We will be using some resources from the webauthn-server-demo in our project.
 
 ![alt text](../images/newstructure.png "New Structure")]
 
-**WebAuthn Data Entites** 
+**WebAuthn Data Entities** 
 
 The `data` folder contains the data entities used by the WebAuthn Server. 
 
@@ -147,7 +147,7 @@ The `RegistrationStorage` class is an interface that extends the `CredentialRepo
 
 This layer manages the general architecture of the system, and is where most business logic and integration code would go. The demo server implements the "persistent" storage of users and credential registrations - the `CredentialRepository` integration point - as the `InMemoryRegistrationStorage` class, which simply keeps them stored in memory for a limited time. The transient storage of pending challenges is also kept in memory, but for a shorter duration.
 
-The logic for authorizing registration of additional credentials, and deregistration of credentials, is also in this layer. In general, anything that would be specific to a particular Relying Party (RP) would go in this layer.
+The logic for authorizing registration of additional credentials, and de-registration of credentials, is also in this layer. In general, anything that would be specific to a particular Relying Party (RP) would go in this layer.
 
 **Yubico Utils**
 
@@ -190,7 +190,7 @@ The `preview-metadata.json` stores metadata for known/trusted authenticators.
 <details>
 <summary><strong>Step-by-step instructions to show user registrations</strong></summary><p>
 
-1. Create AccountContoller.java
+1. Create AccountController.java
    ```
    echo '' > src/main/java/com/example/demo/AccountController.java
    ```

@@ -1,4 +1,4 @@
-# 1. Getting Started: Passwordless Workshop Prerequisistes and Setup
+# Module 1: Getting Started - Passwordless Workshop Prerequisites and Setup
 This section outlines the prerequisites to complete the workshop and instructions for setting up the development environment that you will use throughout the workshop.
 
 ## Prerequisites
