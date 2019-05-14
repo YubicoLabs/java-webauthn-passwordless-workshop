@@ -8,7 +8,7 @@ In order to complete this workshop you will need a development environment with 
 * [Maven 3.2](https://maven.apache.org/download.cgi)+
 * FIDO2 compatible platform / browser
   * MacOS: [Safari Technical Preview](https://developer.apple.com/safari/technology-preview/) version 71+
-  * Windows 10 Version 1809+: Edge, Chrome version 72+, Firefox version 66+
+  * Windows 10 Version 1809+: Edge
 * A favorite text editor or IDE
 * A security key
 

@@ -10,7 +10,7 @@ You'll start with a java web application that secures access to a page with a lo
 * [Maven 3.2](https://maven.apache.org/download.cgi)+
 * FIDO2 Compatible browser
   * MacOS: [Safari Technical Preview](https://developer.apple.com/safari/technology-preview/) version 71+
-  * Windows 10 Version 1809+: Edge, Chrome version 72+, Firefox version 66+
+  * Windows 10 Version 1809+: Edge
 * A favorite text editor or IDE
 * A security key
 * [Optional] An [Azure](https://azure.microsoft.com/) Subscription. If you already have a subscription you can use it or you can get a free trial [here](https://azure.microsoft.com/free/).
