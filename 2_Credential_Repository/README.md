@@ -44,6 +44,11 @@ This section will walk through how to add the Java WebAuthn Server as a project,
 Open the ```pom.xml``` and add the webauthn-server-core and webauthn-server-attestation dependencies.
 ```xml
 <dependency>
+    <groupId>ch.qos.logback</groupId>
+    <artifactId>logback-classic</artifactId>
+    <version>1.2.3</version>
+</dependency>
+<dependency>
     <groupId>com.yubico</groupId>
     <artifactId>webauthn-server-core</artifactId>
     <!--Check for the latest version at Maven Central-->
@@ -70,8 +75,8 @@ We will be using some resources from the webauthn-server-demo in our project.
 <details>
 <summary><strong>Step-by-step instructions to get the resources</strong></summary><p>
 
-1. Change directory to  `PasswordlessWorkshop`
-2. Open getLibs.sh or getLibs.ps in your editor take a look at what it does
+1. Verify you are in the  `PasswordlessWorkshop/initial` directory
+2. Open `getLibs.sh` or `getLibs.ps1` in your editor take a look at what it does
     1. First it clones the java-webauthn-server repo
     2. Next the webauthn-server-demo data and yubico packages are copied to the project
     3. Then the AuthenticatedAction, Config, InMemoryRegistrationStorage, and RegistrationStorage, preview metadata, lib, and js content are copied to the project
@@ -83,7 +88,7 @@ We will be using some resources from the webauthn-server-demo in our project.
    ./getLibs.sh
    ```
 
-   PowerShell:
+   PowerShell (May need to run a second time if ./src/main/resources/static/lib folder does not exist):
     ```
     ./getLibs.ps1
     ```
@@ -168,7 +173,7 @@ The `preview-metadata.json` stores metadata for known/trusted authenticators.
 <details>
 <summary><strong>Step-by-step instructions to get user registrations from the database</strong></summary><p>
 
-1. Open `WebAuthnServer.java` in your editor.
+1. Open `./src/main/java/com/exampe/demo/WebAuthnServer.java` in your editor.
 2. Add the following method to the class
    ```
    public Collection<CredentialRegistration> getRegistrationsByUsername(String username) {
@@ -192,9 +197,9 @@ The `preview-metadata.json` stores metadata for known/trusted authenticators.
 
 1. Create AccountController.java
    ```
-   echo '' > src/main/java/com/example/demo/AccountController.java
+   echo '' > ./src/main/java/com/example/demo/AccountController.java
    ```
-2. Open `AccountController.java` in an editor and create the following class
+2. Open `./src/main/java/com/example/demo/AccountController.java` in an editor and create the following class
     ```java
     package com.example.demo;
 
@@ -218,7 +223,7 @@ The `preview-metadata.json` stores metadata for known/trusted authenticators.
         }
     }
     ```
-3. Open src/main/resources/templates/account.html in an editor and add the following to the body section.
+3. Open `./src/main/resources/templates/account.html` in an editor and add the following to the body section.
     ```javascript
         <div class="container">
             <div class="row">
@@ -257,23 +262,32 @@ The `preview-metadata.json` stores metadata for known/trusted authenticators.
 <details>
 <summary><strong>Step-by-step instructions to set WebAuthn Server environment variables</strong></summary><p>
 
-1. Open the web app on the [Azure Portal](https://portal.azure.com)
-2. Go to the web app Configuration Settings
-3. Add the following application settings:
-- `YUBICO_WEBAUTHN_PORT`: 443
-
-- `YUBICO_WEBAUTHN_ALLOWED_ORIGINS`: URL to your web app. Example:
-`YUBICO_WEBAUTHN_ALLOWED_ORIGINS=https://<web app name>.azurewebsites.net`
-
-- `YUBICO_WEBAUTHN_RP_ID`: The [RP ID](https://www.w3.org/TR/webauthn/#rp-id)
-the server will report.  Example: `YUBICO_WEBAUTHN_RP_ID=<web app name>.azurewebsites.net`
-
-- `YUBICO_WEBAUTHN_RP_NAME`: The human-readable
-[RP name](https://www.w3.org/TR/webauthn/#dom-publickeycredentialentity-name)
-the server will report. Example: `YUBICO_WEBAUTHN_RP_ID='Yubico Web
-Authentication demo'`
-
-![alt text](../images/applicationsettings.png "Application Settings")
+1. Open `./pom.xml` in your editor
+2. Add the following to the `appSettings` to the `azure-webapp-maven-plugin` plugin
+    ```xml
+    <appSettings>
+        <property> 
+            <name>JAVA_OPTS</name> 
+            <value>-Dserver.port=80</value> 
+        </property>
+        <property> 
+            <name>YUBICO_WEBAUTHN_ALLOWED_ORIGINS</name> 
+            <value>https://${WEBAPP_NAME}.azurewebsites.net</value> 
+        </property>  
+        <property> 
+            <name>YUBICO_WEBAUTHN_PORT</name> 
+            <value>80</value> 
+        </property> 
+        <property> 
+            <name>YUBICO_WEBAUTHN_RP_ID</name> 
+            <value>${WEBAPP_NAME}.azurewebsites.net</value> 
+        </property> 
+        <property> 
+            <name>YUBICO_WEBAUTHN_RP_NAME</name> 
+            <value>'Yubico Web Authentication demo'</value> 
+        </property> 
+    </appSettings>
+    ```
 
 </p></details>
 
@@ -290,7 +304,7 @@ Authentication demo'`
     mvn clean package azure-webapp:deploy
     ```
    
-2. Open the web app URL local https://localhost:8443/ or in the cloud.
+2. Open the web app URL (The local URL is https://localhost:8443/)
 3. Log in and go to the account page.
 4. You should see no security keys registered
 

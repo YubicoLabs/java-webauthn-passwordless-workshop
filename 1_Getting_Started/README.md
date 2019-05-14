@@ -42,14 +42,27 @@ git clone https://github.com/elukewalker/PasswordlessWorkshop
 ```
 
 ### Set the Active Spring Profile
-1. Go to the resources folder
-   ```
-   cd PasswordlessWorkshop/initial/src/main/resources
-   ```
-2. Open application.properties with your preferred editor and set the spring.profile.active to 'cloud' for cloud development or 'local' to configure the local server for SSL. _Note: Azure Cloud Shell has an [Integrated Cloud Shell Editor](https://docs.microsoft.com/en-us/azure/cloud-shell/using-cloud-shell-editor). Just run ```code .```_
+1. Change directory to the workshop
+```
+cd PasswordlessWorkshop/initial
+```
+2. Open `./src/main/resources/application.properties` in your preferred editor. _Note: Azure Cloud Shell has an [Integrated Cloud Shell Editor](https://docs.microsoft.com/en-us/azure/cloud-shell/using-cloud-shell-editor). Just run `code .`_
+3. Set the spring.profile.active to 'cloud' for cloud development or 'local' to configure the local server for SSL and save the file.
    ```
    spring.profiles.active=cloud
    ```
+<details>
+<summary><strong>Troubleshooting</strong></summary><p>
+
+**Cannot find path**
+```powershell
+PS Azure:\> cd PasswordlessWorkshop
+cd : Cannot find path 'Azure:/PasswordlessWorkshop/initial' because it does not exist.
+```
+
+Use `cd $HOME/PasswordlessWorkshop/initial` instead of `cd PasswordlessWorkshop/initial`
+
+</p></details>
 
 ### Generate Self-Signed Certificate for SSL
 _Skip this step if you are using a cloud dev environment._
@@ -59,16 +72,12 @@ WebAuthn requires https so you will need to generate a self-signed certificate i
 <details>
 <summary><strong>Step-by-step instructions (expand if running locally)</strong></summary><p>
 
-1. Navigate to the keystore directory.
-   ```
-   cd keystore
-   ```
-2. Create a set of cryptographic keys and store it in the PKCS12 keystore format.
+1. Create a set of cryptographic keys and store it in the PKCS12 keystore format.
     ```
-    keytool -genkeypair -alias demo -keyalg RSA -keysize 2048 -storetype PKCS12 -keystore demo.p12 -validity 3650
+    keytool -genkeypair -alias demo -keyalg RSA -keysize 2048 -storetype PKCS12 -keystore ./src/main/resources/keystore/demo.p12 -validity 3650
 
     ```
-3. Update the server ssl keystore password. Go up one directory to the resources folder and find the application-local.properties file.. Open it with your preferred editor and replace the server.ssl.key-store-password with the one used in the previous step.
+2. Update the server ssl keystore password. Open `./src/main/resources/application.properties.local` in your preferred editor and replace the server.ssl.key-store-password with the one used in the previous step.
    ```
    server.port=8443
    server.ssl.key-store-type=PKCS12

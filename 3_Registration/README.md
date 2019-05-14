@@ -80,7 +80,12 @@ The webauthn-server-demo project has the concept of `AuthenticatedActions`. We w
 
 The current startRegistration() method only allows a single security key to be registered. Let's update it so that a user can add multiple security keys.
 
-1. Open the WebAuthnServer.java class in your editor and modify the startRegistration() method to look like this
+1. Open the `./src/main/java/com/example/demo/WebAuthnServer.java` class in your editor and 
+2. Add the following import:
+   ```
+   import com.yubico.webauthn.data.AuthenticatorAttachment;
+   ```
+3. Modify the startRegistration() method to look like this:
     ```java
         public Either<String, RegistrationRequest> startRegistration(
             @NonNull String username,
@@ -137,7 +142,7 @@ The current startRegistration() method only allows a single security key to be r
 <details>
 <summary><strong>Step by step instructions</strong></summary><p>
 
-1. Add the following to the import section of the WebAuthnServer class
+1. Add the following to the import section of the `./src/main/java/com/example/demo/WebAuthnServer.java` class
 ```java
 import org.springframework.context.annotation.Bean;
 import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
@@ -146,7 +151,7 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import static com.fasterxml.jackson.annotation.JsonInclude.Include;
 ```
-2. Add the following method to the WebAuthnServer class. The ObjectMapper is configured to handle Optional types and not serialize fields to JSON that are null or absent.
+2. Add the following method to the `./src/main/java/com/example/demo/WebAuthnServer.java` class. The ObjectMapper is configured to handle Optional types and not serialize fields to JSON that are null or absent.
 ```java
 @Bean 
 public ObjectMapper objectMapper() {
@@ -204,9 +209,9 @@ Let's expose two REST endpoints to start and finish the WebAuthn registration op
 
 1. Create WebAuthnController.java
    ```
-   echo '' > src/main/java/com/example/demo/WebAuthnController.java
+   echo '' > ./src/main/java/com/example/demo/WebAuthnController.java
    ```
-2. Open WebAuthnController.java in an editor and create the following class
+2. Open `./src/main/java/com/example/demo/WebAuthnController.java` in an editor and create the following class
     ```java
     package com.example.demo;
 
@@ -215,7 +220,6 @@ Let's expose two REST endpoints to start and finish the WebAuthn registration op
     import java.util.List;
 
     import com.example.demo.WebAuthnServer.SuccessfulAuthenticationResult;
-    import com.example.demo.data.AssertionRequestWrapper;
     import com.example.demo.data.RegistrationRequest;
     import com.yubico.util.Either;
 
@@ -280,7 +284,7 @@ Let's expose two REST endpoints to start and finish the WebAuthn registration op
 <details>
 <summary><strong>Step by step instructions</strong></summary><p>
 
-1. Open the account.html page in an editor
+1. Open the `./src/main/resources/templates/account.html` page in an editor
 2. In the header section add cross site request forgery token details. Our JavaScript requires the CSRF token to call our REST endpoints
     ```javascript
     <meta th:name="_csrf" th:content="${_csrf.token}"/>
@@ -416,7 +420,7 @@ Let's expose two REST endpoints to start and finish the WebAuthn registration op
     mvn clean package azure-webapp:deploy
     ```
    
-2. Open the web app URL local https://localhost:8443/ or in the cloud.
+2. Open the web app local URL https://localhost:8443/ or the cloud URL.
 3. Sign in to the web app
 4. Register a security key.
 5. Refresh browser to see the security key show up in the list.

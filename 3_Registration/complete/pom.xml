@@ -82,12 +82,27 @@
 				<configuration>
 					<deploymentType>jar</deploymentType>
 
-					<!-- configure app to run on port 443, required by App Service -->
 					<appSettings>
 						<property> 
 							<name>JAVA_OPTS</name> 
-							<value>-Dserver.port=443</value> 
+							<value>-Dserver.port=80</value> 
 						</property> 
+						<property> 
+							<name>YUBICO_WEBAUTHN_ALLOWED_ORIGINS</name> 
+							<value>https://${WEBAPP_NAME}.azurewebsites.net</value> 
+						</property>  
+						<property> 
+							<name>YUBICO_WEBAUTHN_PORT</name> 
+							<value>80</value> 
+						</property> 
+						<property> 
+							<name>YUBICO_WEBAUTHN_RP_ID</name> 
+							<value>${WEBAPP_NAME}.azurewebsites.net</value> 
+						</property> 
+						<property> 
+							<name>YUBICO_WEBAUTHN_RP_NAME</name> 
+							<value>'Yubico Web Authentication demo'</value> 
+						</property>
 					</appSettings>
 
 					<!-- Web App information -->

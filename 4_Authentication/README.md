@@ -67,10 +67,10 @@ Let's expose two REST endpoints to start and finish the WebAuthn authentication 
 <details>
 <summary><strong>Step by step instructions</strong></summary><p>
 
-1. Open the `WebAuthnController.java` class in your editor
+1. Open the `./src/main/java/com/example/demo/WebAuthnController.java` class in your editor
 2. Add the following imports in the import section
     ```java
-    import com.example.demo.data.AssertionRequest;
+    import com.example.demo.data.AssertionRequesWrapper;
     
     import org.springframework.security.core.userdetails.UserDetails;
     import org.springframework.security.core.userdetails.UserDetailsService;
@@ -133,7 +133,7 @@ Let's expose two REST endpoints to start and finish the WebAuthn authentication 
 <details>
 <summary><strong>Step by step instructions</strong></summary><p>
 
-1. Open the `WebSecurityConfig.java` in your editor
+1. Open the `./src/main/java/com/example/demo/WebSecurityConfig.java` in your editor
 2. Modify the `antMatchers()` method to include the new REST endpoints and javascript libraries so that they are accessible to users before they sign in.
 ```java
  http
@@ -143,7 +143,7 @@ Let's expose two REST endpoints to start and finish the WebAuthn authentication 
 ```
 
 ### Integrate WebAuthn API into application
-1. Open the `login.html` template
+1. Open the `./src/main/resources/templates/login.html` template
 2. Add the following code in the header section
     ```javascript
             <meta th:name="_csrf" th:content="${_csrf.token}" />

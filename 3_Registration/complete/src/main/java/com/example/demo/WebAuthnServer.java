@@ -90,6 +90,8 @@ import lombok.Value;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.yubico.webauthn.data.AuthenticatorAttachment;
+
 import org.springframework.context.annotation.Bean;
 import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
