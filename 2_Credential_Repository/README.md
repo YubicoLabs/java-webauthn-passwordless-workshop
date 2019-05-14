@@ -38,7 +38,16 @@ These operations perform all the verification logic specified by the W3C Web Aut
 This workshop will use an in-memory database to store pending requests and credentials.
 
 ## Implementation overview
-This section will walk through how to add the Java WebAuthn Server as a project, create a credential repository, and manage credential data through a Model-View-Controller.
+This section will walk through how to add the Java WebAuthn Server as a project, create an in-memory credential repository, and manage credential data through a Model-View-Controller.
+
+**Important Note**
+
+Because this workshop uses an in-memory credential repository, all credentials will disappear each time the application restarts. Since we are registering a resident credential on the authenticator itself, those credentials will become invalid after an application restart. The risk is that the authenticator will fill up with invalid resident credentials. Using a YubiKey is ideal for development environments such as this. If your YubiKey fills up with invalid credentials, you can remove all FIDO credentials by using the [YubiKey Manager](https://www.yubico.com/products/services-software/download/yubikey-manager/). Basically it resets the security key to factory default settings. 
+
+Windows 10 example of multiple credentials on a security key. The top choice is typically the most recent credential registered.
+
+![alt text](../images/securitykeyidentities.png "Security Key Identities")
+
 
 ### Dependency configuration
 Open the ```pom.xml``` and add the webauthn-server-core and webauthn-server-attestation dependencies.
