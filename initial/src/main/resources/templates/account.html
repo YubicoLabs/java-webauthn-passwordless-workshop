@@ -4,17 +4,28 @@
     <head>
         <title>Account</title>
 
-        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+        <link href="/css/styles.css" rel="stylesheet" />
     </head>
     <body>
         <div class="container">
-            <h1 th:inline="text">Signed in as [[${#httpServletRequest.remoteUser}]]!</h1>
-        </div>
-        <div class="container">
-            <p></p>
-            <form class="form-group" th:action="@{/logout}" method="post">
-                <input class="btn btn-primary" type="submit" value="Sign Out"/>
-            </form>
+            <div class="card card--account">
+                <div class="account-header">
+                    <svg style="fill: #9c9c9c;" focusable="false" viewBox="0 0 24 24" aria-hidden="true" role="presentation">
+                        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z"></path>
+                        <path fill="none" d="M0 0h24v24H0z"></path>
+                    </svg>
+                    <div>
+                        <h1 th:inline="text">Welcome [[${#httpServletRequest.remoteUser}]]!</h1>
+                        <p>You have successfully signed in. On this page you will find the security settings for your account.</p>
+                    </div>
+                </div>
+
+                <hr />
+
+                <form class="form-group" th:action="@{/logout}" method="post">
+                    <input type="submit" value="Sign Out" class="secondary" />
+                </form>
+            </div>
         </div>
     </body>
 </html>

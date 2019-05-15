@@ -234,33 +234,28 @@ The `preview-metadata.json` stores metadata for known/trusted authenticators.
     ```
 3. Open `./src/main/resources/templates/account.html` in an editor and add the following to the body section.
     ```javascript
-        <div class="container">
-            <div class="row">
-                <div class="col-md-12">
-                    <h4> Security Keys </h4>
-                </div>
+        <div class="card card--internal">
+            <h2 class="section-header">Security Keys</h2>
+            <div th:if="${registrations.empty}" class="card card--error" id="no-keys">
+                <svg focusable="false" viewBox="0 0 24 24" aria-hidden="true" role="presentation">
+                    <path fill="none" d="M0 0h24v24H0z"></path><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"></path>
+                </svg>
+                <p>Warning, no authenticators have been added and your account is not secure. Configure authenticators below.</p>
             </div>
-            <div class="row">
-                <div class="col-md-6">
-                    <table class="table">
-                        <thead>
-                            <tr>
-                                <th> Nickname </th>
-                                <th> Registered </th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr th:if="${registrations.empty}">
-                                <td colspan="2"> No Security Keys Registered</td>
-                            </tr>
-                            <tr th:each="registration : ${registrations}">
-                                <td><span th:text="${registration.credentialNickname.get()}"> NickName </span></td>
-                                <td><span th:text="${registration.registrationTime}"> Registered </span></td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
+            <table class="table" id="keys" th:classappend="${registrations.empty}? 'hide'">
+                <thead>
+                    <tr>
+                        <th> Nickname </th>
+                        <th> Registration Time </th>
+                    </tr>
+                </thead>
+                <tbody id="keys">
+                    <tr th:each="registration : ${registrations}" >
+                        <td><span th:text="${registration.credentialNickname.get()}"> NickName </span></td>
+                        <td><span th:text="${registration.registrationTime}"> Registered </span></td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
     ```
 

@@ -305,9 +305,14 @@ Let's expose two REST endpoints to start and finish the WebAuthn registration op
                 $('#takeAction').hide();
             });
 
-            function setStatus(statusText) {
+            function setStatus(statusText, success) {
                 $('#status').text(statusText);
-            }           
+                if (success) {
+                    $('#status').removeClass('error');
+                } else {
+                    $('#status').addClass('error');
+                }
+            }
 
             function submitResponse(url, requestId, response) {
                 console.log('submitResponse', url, requestId, response);
@@ -337,7 +342,7 @@ Let's expose two REST endpoints to start and finish the WebAuthn registration op
                 const credentialNickname = $("#inputNickname").val();
                 const requireResidentKey = true;
         
-                var token = $("meta[name='_csrf']").attr("content"); 
+                var token = $("meta[name='_csrf']").attr("content");
         
                 return fetch('/register', {
                     method: 'POST',
@@ -345,10 +350,10 @@ Let's expose two REST endpoints to start and finish the WebAuthn registration op
                         'X-CSRF-TOKEN': token
                     },
                     body: new URLSearchParams({
-                    username,
-                    displayName,
-                    credentialNickname,
-                    requireResidentKey,
+                        username,
+                        displayName,
+                        credentialNickname,
+                        requireResidentKey,
                     })
                     
                 })
@@ -364,40 +369,98 @@ Let's expose two REST endpoints to start and finish the WebAuthn registration op
                         url = '/register/finish';
                         return submitResponse(url, request.requestId, publicKeyCredential);
                     })
+                    .catch(error => {
+                        throw error;
+                    })
+                    ;
+                })
+                .then(data => {
+                    $('#takeAction').hide();
+                    console.log(data);
+                    setStatus("Success!", true);
+                    $('#no-keys').hide();
+                    $('#keys').show();
+                    $('#inputNickname').val('');
+                    $('#keys').append(`
+                        <tr>
+                            <td>${data.registration.credentialNickname}</td>
+                            <td>${data.registration.registrationTime}</td>
+                        </tr>
+                    `);
+                    return data;
+                })
+                .catch(error => {
+                    $('#takeAction').hide();
+                    console.log('register', error);
+                    setStatus(error.message, false);
+                })
+                ;
+            }
+
+            function performAuthentication(username, token) {
+                 return fetch('/authenticate', {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': token
+                    },
+                })
+                .then(response => response.json())
+                .then(function(request) {
+                    console.log('request succeeded with JSON response', request)
+                    
+                    return webauthn.getAssertion(request.publicKeyCredentialRequestOptions)
+                    .then(webauthn.responseToObject)
+                    .then(function (publicKeyCredential) { 
+                        console.log("publicKeyCredential ", publicKeyCredential);
+            
+                        url = '/authenticate/finish';
+                        return submitResponse(url, request.requestId, publicKeyCredential)
+                    })
+                    .catch(error => {
+                        console.log(error);
+                    })
+                    ;
                 })
                 .then(data => {
                     if (data && data.success) {
                         console.log("Success!");
-                        setStatus("Success!");
+                        setStatus('Success!', false);
                     } else {
                         console.log("Error!");
-                        setStatus('Error!');
+                        setStatus('Error!', true);
                     }
                     $('#takeAction').hide();
-                    console.log(data);
                     return data;
+                })
+                .catch(error => {
+                    console.log(error);
                 })
                 ;
             }
-         </script>
+        </script>
     ```
 5. In the body section add the following UI to register a security key and get a handle on the username of the currently signed in user.
     ```html
         <sec:authentication property="name" var="username" />
-        <div class="container">
-            <h4>Register a Security Key</h4>
-            <div class="form-inline">
-                <div class="form-group mx-sm-3 mb-2">
-                    <label for="inputNickname" class="sr-only">Nickname</label>
-                    <input type="text" class="form-control" id="inputNickname" placeholder="Nickname">
-                </div>
-                <button onclick="register()" class="btn btn-primary mb-2">Register</button>
-            </div>
+
+        ...
+
+
+        <div class="card card--internal">
+
+            ...
+
+            <h2 class="section-header">Register a Security Key</h2>
+            <label class="input-group">
+                <input type="text" id="inputNickname">
+                <span>Nickname</span>
+            </label>
+            <button onclick="register()">Register</button>
             <p id="status"></p>
             <div id="takeAction">
-                <p class="text-justify">Please insert and take action on the security key.</p>
-                <div class="spinner-border" role="status">
-                    <span class="sr-only">Loading...</span>
+                <p>Please insert and take action on the security key.</p>
+                <div class="loader-container" role="status">
+                    <svg class="loader" viewBox="22 22 44 44"><circle class="loader-circle" cx="44" cy="44" r="20.2" fill="none" stroke-width="3.6"></circle></svg>
                 </div>
             </div>
         </div>

@@ -4,34 +4,51 @@
     <head>
         <title>WebAuthn Example </title>
 
-        <meta charset="utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-        <meta name="description" content="">
-        <meta name="author" content="">
-
-        <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" rel="stylesheet"
-            integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
-        <link href="https://getbootstrap.com/docs/4.0/examples/signin/signin.css" rel="stylesheet" crossorigin="anonymous" />
+        <link href="/css/styles.css" rel="stylesheet" />
     </head>
     <body>
         <div class="container">
-            <div th:if="${param.error}" class="error">
-                Invalid username and password.
+            <div class="card card--login">
+                <div th:if="${param.logout}">
+                    <p>You have been logged out.</p>
+                </div>
+
+                <form class="form-signin" th:action="@{/login}" method="post">
+                    <h1 class="form-signin-heading">Please sign in</h1>
+                    <p>Example: user / password</p>
+                    <label class="input-group">
+                        <input
+                            type="text"
+                            id="username"
+                            name="username"
+                            class="form-control"
+                            required
+                            autofocus
+                        />
+                        <span>User Name<sup>*</sup></span>
+                    </label>
+                    <label class="input-group">
+                        <input
+                            type="password"
+                            id="password"
+                            name="password"
+                            class="form-control"
+                            required
+                            autofocus
+                        />
+                        <span>Password<sup>*</sup></span>
+                    </label>
+                    <p th:if="${param.error}" class="error">
+                        Invalid username and password.
+                    </p>
+                    <input type="submit" value="Sign In"/>
+                </form>
+
+                <hr />
+
+                </p>
+                <p><a href="/index" th:href="@{/home}">Back to home page</a></p>
             </div>
-            <div th:if="${param.logout}">
-                You have been logged out.
             </div>
-            <form class="form-signin" th:action="@{/login}" method="post">
-                <h2 class="form-signin-heading">Please sign in</h2>
-                <p>Example: user / password</p>
-                <p><label for="username" class="sr-only"> User Name : </label>
-                    <input type="text" id="username" name="username" class="form-control" placeholder="user" required
-                    autofocus/> </p>
-                <p><label for="password" class="sr-only"> Password: </label>
-                    <input type="password" id="password" name="password" class="form-control" placeholder="password"
-                    required autofocus/> </p>
-                <p><input class="btn btn-lg btn-primary btn-block" type="submit" value="Sign In"/></p>
-            </form>
-        </div>
     </body>
 </html>

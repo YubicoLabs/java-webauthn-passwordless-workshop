@@ -138,7 +138,7 @@ Let's expose two REST endpoints to start and finish the WebAuthn authentication 
 ```java
  http
     .authorizeRequests()
-        .antMatchers("/js/**", "/lib/**", "/", "/home", "/authenticate", "/authenticate/finish").permitAll()
+        .antMatchers("/", "/home", "/css/**", "/images/**", "/js/**", "/lib/**", "/authenticate", "/authenticate/finish").permitAll()
         .anyRequest().authenticated()
 ```
 
@@ -146,88 +146,99 @@ Let's expose two REST endpoints to start and finish the WebAuthn authentication 
 1. Open the `./src/main/resources/templates/login.html` template
 2. Add the following code in the header section
     ```javascript
-            <meta th:name="_csrf" th:content="${_csrf.token}" />
-            <meta th:name="_csrf_header" th:content="${_csrf.headerName}" />
+        <meta th:name="_csrf" th:content="${_csrf.token}" />
+        <meta th:name="_csrf_header" th:content="${_csrf.headerName}" />
 
-            <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
-            <script type="module" src="/lib/fetch/fetch-3.0.0.js"></script>
-            <script src="/lib/base64js/base64js-1.3.0.min.js"></script>
-            <script src="/js/base64url.js"></script>
-            <script src="/js/webauthn.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+        <script type="module" src="/lib/fetch/fetch-3.0.0.js"></script>
+        <script src="/lib/base64js/base64js-1.3.0.min.js"></script>
+        <script src="/js/base64url.js"></script>
+        <script src="/js/webauthn.js"></script>
 
-            <script>
+        <script>
 
-                function submitResponse(url, requestId, response) {
-                    console.log('submitResponse', url, requestId, response);
-            
-                    var token = $("meta[name='_csrf']").attr("content"); 
-            
-                    const body = {
-                        requestId,
-                        credential: response,
-                    };
-                    console.log('body', JSON.stringify(body));
-                    
-                    return fetch(url, {
-                        method: 'POST',
-                        headers: {
-                            'X-CSRF-TOKEN': token
-                        },
-                        body: JSON.stringify(body),
-                    }).then(response => response.json());
-                    ;
+            function setStatus(statusText, success) {
+                $('#status').text(statusText);
+                if (success) {
+                    $('#status').removeClass('error');
+                } else {
+                    $('#status').addClass('error');
                 }
+            }
 
-                function authenticate() {
-                    const username = "";
-                    const token = $("meta[name='_csrf']").attr("content");
+            function submitResponse(url, requestId, response) {
+                console.log('submitResponse', url, requestId, response);
+        
+                var token = $("meta[name='_csrf']").attr("content"); 
+        
+                const body = {
+                    requestId,
+                    credential: response,
+                };
+                console.log('body', JSON.stringify(body));
+                
+                return fetch(url, {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': token
+                    },
+                    body: JSON.stringify(body),
+                }).then(response => response.json());
+                ;
+            }
 
-                    return fetch('/authenticate', {
-                        method: 'POST',
-                        headers: {
-                            'X-CSRF-TOKEN': token
-                        },
-                        })  
-                        .then(response => response.json())
-                        .then(function (request) {
-                            console.log('request succeeded with JSON response', request)
+            function authenticate() {
+                const username = "";
+                const token = $("meta[name='_csrf']").attr("content");
 
-                            return webauthn.getAssertion(request.publicKeyCredentialRequestOptions)
-                                .then(webauthn.responseToObject)
-                                .then(function (publicKeyCredential) {
-                                    console.log("publicKeyCredential ", publicKeyCredential);
+                return fetch('/authenticate', {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': token
+                    },
+                    })  
+                    .then(response => response.json())
+                    .then(function (request) {
+                        console.log('request succeeded with JSON response', request)
 
-                                    url = '/authenticate/finish';
-                                    return submitResponse(url, request.requestId, publicKeyCredential);
-                                })
-                                //.then( window.location.href = "/account")
+                        return webauthn.getAssertion(request.publicKeyCredentialRequestOptions)
+                            .then(webauthn.responseToObject)
+                            .then(function (publicKeyCredential) {
+                                console.log("publicKeyCredential ", publicKeyCredential);
+
+                                url = '/authenticate/finish';
+                                return submitResponse(url, request.requestId, publicKeyCredential);
                             })
-                        .then(data => {
-                            if (data && data.success) {
-                                console.log("Success!");
-                                //TODO setStatus(statusStrings.success);
-                                window.location.href = "/account"
-                            } else {
-                                console.log("Error!");
-                                //TODO setStatus('Error!');
-                            }
-                            console.log(data);
-                            return data;
+                            .catch(error => {
+                                throw error;
+                            })
+                            ;
                         })
-                        ;
-                }
+                    .then(data => {
+                        console.log("Success!");
+                        window.location.href = "/account"
+                        console.log(data);
+                        return data;
+                    })
+                    .catch(error => {
+                        console.log('authenticate', error);
+                        setStatus(error.message, false);
+                    })
+                    ;
+            }
 
-            </script>
+        </script>
     ```
 3. Add the Passwordless sign in button to the body section.
     ```html
-    <div class="container">
-        <h2 class="form-signin-heading">Passwordless sign in</h2>
-        <p>Sign in with your previously registered security key</p>
-        <p><button class="btn btn-lg btn-primary btn-block" onclick="authenticate()">Passwordless Sign in</button><br />
-        </p>
-        <p><a href="/index" th:href="@{/home}">Back to home page</a></p>
-    </div>
+    <hr />
+
+    <h2 class="form-signin-heading">Passwordless sign in</h2>
+    <p>Sign in with your previously registered security key</p>
+    <p id="status"></p>
+    <p><button onclick="authenticate()">Passwordless Sign in</button><br />
+    </p>
+    <p><a href="/index" th:href="@{/home}">Back to home page</a></p>ref="/index" th:href="@{/home}">Back to home page</a></p>
     ```
 
 </p></details>

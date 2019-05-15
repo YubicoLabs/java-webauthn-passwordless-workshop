@@ -3,15 +3,15 @@
     <head>
         <title>WebAuthn Passwordless Sign In Example</title>
 
-        <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" rel="stylesheet"
-            integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M" crossorigin="anonymous">
-        <link href="https://getbootstrap.com/docs/4.0/examples/signin/signin.css" rel="stylesheet" crossorigin="anonymous" />
+        <link href="/css/styles.css" rel="stylesheet" />
     </head>
     <body>
         <div class="container">
-            <h1>Welcome to the Passwordless Workshop Demo!</h1>
-            
-            <p>Click <a th:href="@{/account}">here</a> to register a security key.</p>
+            <div class="card card--home">
+                <h1>Welcome to the Passwordless Workshop Demo!</h1>
+        
+                <p>Click <a th:href="@{/account}">here</a> to register a security key.</p>
+            </div>
         </div>
     </body>
 </html>
