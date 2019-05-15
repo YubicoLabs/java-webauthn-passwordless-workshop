@@ -298,11 +298,7 @@ Let's expose two REST endpoints to start and finish the WebAuthn registration op
     <script src="/js/base64url.js"></script>
     <script src="/js/webauthn.js"></script>
     ```
-4. In the header section add the following so that our JavaScript can get a handle on the username of the currently signed in user.
-    ```javascript
-    <sec:authentication property="name" var="username" />
-    ```
-5. In the header section add the following javascript to call our REST endpoints and register a security key
+4. In the header section add the following javascript to call our REST endpoints and register a security key
     ```javascript
         <script>
             $(function () {
@@ -385,8 +381,9 @@ Let's expose two REST endpoints to start and finish the WebAuthn registration op
             }
          </script>
     ```
-6. In the body section add the following UI to register a security key
+5. In the body section add the following UI to register a security key and get a handle on the username of the currently signed in user.
     ```html
+        <sec:authentication property="name" var="username" />
         <div class="container">
             <h4>Register a Security Key</h4>
             <div class="form-inline">

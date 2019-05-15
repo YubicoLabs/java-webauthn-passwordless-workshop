@@ -103,6 +103,10 @@
 							<name>YUBICO_WEBAUTHN_RP_NAME</name> 
 							<value>'Yubico Web Authentication demo'</value> 
 						</property>
+						<property> 
+							<name>YUBICO_WEBAUTHN_U2F_APPID</name> 
+							<value>https://${WEBAPP_NAME}.azurewebsites.net</value> 
+						</property>
 					</appSettings>
 
 					<!-- Web App information -->

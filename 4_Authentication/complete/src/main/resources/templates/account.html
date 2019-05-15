@@ -15,8 +15,6 @@
         <script src="/js/base64url.js"></script>
         <script src="/js/webauthn.js"></script>
 
-        <sec:authentication property="name" var="username" />
-
         <script>
             $(function () {
                 $('#takeAction').hide();
@@ -134,6 +132,7 @@
         </script>
     </head>
     <body>
+        <sec:authentication property="name" var="username" />
         <div class="container">
             <h1 th:inline="text">Signed in as [[${#httpServletRequest.remoteUser}]]!</h1>
         </div>

@@ -294,7 +294,11 @@ The `preview-metadata.json` stores metadata for known/trusted authenticators.
         <property> 
             <name>YUBICO_WEBAUTHN_RP_NAME</name> 
             <value>'Yubico Web Authentication demo'</value> 
-        </property> 
+        </property>
+        <property> 
+            <name>YUBICO_WEBAUTHN_U2F_APPID</name> 
+            <value>https://${WEBAPP_NAME}.azurewebsites.net</value> 
+        </property>
     </appSettings>
     ```
 
