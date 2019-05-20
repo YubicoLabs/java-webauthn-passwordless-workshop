@@ -77,7 +77,7 @@ WebAuthn requires https so you will need to generate a self-signed certificate i
     keytool -genkeypair -alias demo -keyalg RSA -keysize 2048 -storetype PKCS12 -keystore ./src/main/resources/keystore/demo.p12 -validity 3650
 
     ```
-2. Update the server ssl keystore password. Open `./src/main/resources/application.properties.local` in your preferred editor and replace the server.ssl.key-store-password with the one used in the previous step.
+2. Update the server ssl keystore password. Open `./src/main/resources/application-local.properties` in your preferred editor and replace the server.ssl.key-store-password with the one used in the previous step.
    ```
    server.port=8443
    server.ssl.key-store-type=PKCS12
@@ -96,6 +96,7 @@ WebAuthn requires https so you will need to generate a self-signed certificate i
    mvn clean package spring-boot:run
    ```
 2. Once the application starts up, point your browser to https://localhost:8443. You should see the home page.
+3. Log in with username `user` and password `password`
 
 _Note: In Safari, you may need to open https://localhost:8443 in a private window._
 
@@ -122,6 +123,7 @@ _Note: In Safari, you may need to open https://localhost:8443 in a private windo
    2. Open SSL settings and set HTTP Only to On
    ![alt text](../images/httpsonly.png "HTTPS Only On")
 5. Go to the Overview and click the URL. You should see the home page.
+6. Log in with username `user` and password `password`
 
 ## Recap
 * Use a unique personal or development Azure account that will not interfere with production systems
