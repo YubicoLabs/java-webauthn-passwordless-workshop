@@ -182,7 +182,7 @@ The `preview-metadata.json` stores metadata for known/trusted authenticators.
 <details>
 <summary><strong>Step-by-step instructions to get user registrations from the database</strong></summary><p>
 
-1. Open `./src/main/java/com/exampe/demo/WebAuthnServer.java` in your editor.
+1. Open `./src/main/java/com/example/demo/WebAuthnServer.java` in your editor.
 2. Add the following method to the class
    ```
    public Collection<CredentialRegistration> getRegistrationsByUsername(String username) {
