@@ -238,7 +238,7 @@ Let's expose two REST endpoints to start and finish the WebAuthn authentication 
     <p id="status"></p>
     <p><button onclick="authenticate()">Passwordless Sign in</button><br />
     </p>
-    <p><a href="/index" th:href="@{/home}">Back to home page</a></p>ref="/index" th:href="@{/home}">Back to home page</a></p>
+    <p><a href="/index" th:href="@{/home}">Back to home page</a></p>
     ```
 
 </p></details>
