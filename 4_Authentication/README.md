@@ -70,7 +70,7 @@ Let's expose two REST endpoints to start and finish the WebAuthn authentication 
 1. Open the `./src/main/java/com/example/demo/WebAuthnController.java` class in your editor
 2. Add the following imports in the import section
     ```java
-    import com.example.demo.data.AssertionRequesWrapper;
+    import com.example.demo.data.AssertionRequestWrapper;
     
     import org.springframework.security.core.userdetails.UserDetails;
     import org.springframework.security.core.userdetails.UserDetailsService;
