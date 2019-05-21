@@ -123,6 +123,38 @@
 					<linuxRuntime>jre8</linuxRuntime>
 				</configuration>
 			</plugin>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>keytool-maven-plugin</artifactId>
+				<version>1.5</version>
+				<executions>
+				<execution>
+					<phase>generate-resources</phase>
+					<id>clean</id>
+					<goals>
+					<goal>clean</goal>
+					</goals>
+				</execution>
+				<execution>
+					<phase>generate-resources</phase>
+					<id>genkey</id>
+					<goals>
+					<goal>generateKeyPair</goal>
+					</goals>
+				</execution>
+				</executions>
+				<configuration>
+				<keystore>${project.build.directory}/classes/keystore/demo.p12</keystore>
+				<dname>cn=www.example.com, ou=None, L=Seattle, ST=Washington, o=ExampleOrg, c=US</dname>
+				<keypass>changeit</keypass>
+				<storepass>changeit</storepass>
+				<alias>demo</alias>
+				<keyalg>RSA</keyalg>
+				<keysize>2048</keysize>
+				<storetype>PKCS12</storetype>
+				<validity>3650</validity>
+				</configuration>
+			</plugin>
 		</plugins>
 	</build>
 
