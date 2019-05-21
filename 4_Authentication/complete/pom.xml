@@ -16,6 +16,7 @@
 
 	<properties>
 		<java.version>1.8</java.version>
+		<docker.image.name>example/demo</docker.image.name>
 	</properties>
 
 	<dependencies>
@@ -121,6 +122,80 @@
 
 					<!-- Java Runtime Stack for Web App on Linux-->
 					<linuxRuntime>jre8</linuxRuntime>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>keytool-maven-plugin</artifactId>
+				<version>1.5</version>
+				<executions>
+				<execution>
+					<phase>generate-resources</phase>
+					<id>clean</id>
+					<goals>
+					<goal>clean</goal>
+					</goals>
+				</execution>
+				<execution>
+					<phase>generate-resources</phase>
+					<id>genkey</id>
+					<goals>
+					<goal>generateKeyPair</goal>
+					</goals>
+				</execution>
+				</executions>
+				<configuration>
+				<keystore>${project.build.directory}/classes/keystore/demo.p12</keystore>
+				<dname>cn=www.example.com, ou=None, L=Seattle, ST=Washington, o=ExampleOrg, c=US</dname>
+				<keypass>changeit</keypass>
+				<storepass>changeit</storepass>
+				<alias>demo</alias>
+				<keyalg>RSA</keyalg>
+				<keysize>2048</keysize>
+				<storetype>PKCS12</storetype>
+				<validity>3650</validity>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>com.spotify</groupId>
+				<artifactId>docker-maven-plugin</artifactId>
+				<version>0.4.13</version>
+				<executions>
+					<execution>
+						<id>remove-image</id>
+						<phase>clean</phase>
+						<goals>
+							<goal>removeImage</goal>
+						</goals>
+						<configuration>
+							<imageName>${docker.image.name}</imageName>
+							<imageTags>
+								<imageTag>${project.version}</imageTag>
+							</imageTags>
+							<verbose>true</verbose>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>com.spotify</groupId>
+				<artifactId>dockerfile-maven-plugin</artifactId>
+				<version>1.4.10</version>
+				<executions>
+					<execution>
+					<id>default</id>
+					<goals>
+						<goal>build</goal>
+						<goal>push</goal>
+					</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<repository>${docker.image.name}</repository>
+					<tag>${project.version}</tag>
+					<buildArgs>
+					<JAR_FILE>target/${project.build.finalName}.jar</JAR_FILE>
+					</buildArgs>
 				</configuration>
 			</plugin>
 		</plugins>
