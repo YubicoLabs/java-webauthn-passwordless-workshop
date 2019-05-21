@@ -1,6 +1,30 @@
 # Securing a Website with Passwordless Authentication
 In this workshop you will build a simple web application that enables users to register a security key and then use the security key to sign in without typing in a username or password.
 
+<details>
+<summary><strong>TLDR</strong></summary><p>
+
+If you'd rather see the end result without installing the dependencies and going through all the steps then do this _(requires docker)_:
+1. Clone the repo
+   ```
+   git clone https://github.com/elukewalker/PasswordlessWorkshop
+   ```
+2. Build the docker image
+   ```
+   build -t example/demo:latest PasswordlessWorkshop/4_Authentication/complete/.
+   ```
+3. Run the image
+   ```
+   docker run -p 8443:8443 example/demo:latest
+   ```
+4. Open `https://localhost:8443/` in a CTAP2 compatible browser (Edge on Windows 10 1809+ or Safari Technology Preview on macOS)
+5. Sign in with username `user` and password `password`
+6. Register a security key
+7. Sign out
+8.  Click `Passwordless sign in` to sign in without typing a username or password
+
+<p></details>
+
 ## What you'll build:
 You'll start with a java web application that secures access to a page with a login form. Then you'll integrate Yubico's WebAuthn Server libraries to enable FIDO2 security key registration and passwordless authentication. 
 
