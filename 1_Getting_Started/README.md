@@ -101,6 +101,10 @@ WebAuthn requires https so you will need to generate a self-signed certificate i
 _Note: In Safari, you may need to open https://localhost:8443 in a private window._
 
 #### Run Web App on Azure App Service
+
+<details>
+<summary><strong>Expand for Azure App Service instructions</strong></summary><p>
+
 1. Open the ```pom.xml``` in an editor
 2. Configure the [Maven Plugin for Azure App Service](https://docs.microsoft.com/en-us/java/azure/spring-framework/deploy-spring-boot-java-app-with-maven-plugin?view=azure-java-stable). Update the following placeholders in the plugin configuration:
     ```
@@ -124,6 +128,8 @@ _Note: In Safari, you may need to open https://localhost:8443 in a private windo
    ![alt text](../images/httpsonly.png "HTTPS Only On")
 5. Go to the Overview and click the URL. You should see the home page.
 6. Log in with username `user` and password `password`
+
+</p></details>
 
 ## Recap
 * Use a unique personal or development Azure account that will not interfere with production systems
