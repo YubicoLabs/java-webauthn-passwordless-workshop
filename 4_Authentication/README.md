@@ -3,9 +3,9 @@ In this module, you will add a passwordless authentication to the application.
 
 ## WebAuthn Authentication Overview
 <details>
-<summary><strong>Expand for high level overview of WebAuthn registration</strong></summary><p>
+<summary><strong>Expand for high level overview of WebAuthn authentication</strong></summary><p>
 
-### Registration
+### Authentication
 
 Initiate a authentication ceremony:
 

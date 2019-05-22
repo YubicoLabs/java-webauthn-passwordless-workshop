@@ -442,11 +442,11 @@ Let's expose two REST endpoints to start and finish the WebAuthn registration op
 2. Open the web app local URL https://localhost:8443/ or the cloud URL.
 3. Sign in to the web app
 4. Register a security key.
-5. Refresh browser to see the security key show up in the list.
+5. Upon success, the security key shows up in the list.
 
 ## Recap
 * Customize the WebAuthn Server registration settings to your needs
-* Remember to serialize the JSON data
+* Remember to serialize and de-serialize the JSON data
 * Expose registration endpoints
 * Consume registration endpoints in frontend and call the WebAuthn API
 
