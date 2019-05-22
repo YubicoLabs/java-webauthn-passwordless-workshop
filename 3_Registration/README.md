@@ -396,47 +396,6 @@ Let's expose two REST endpoints to start and finish the WebAuthn registration op
                 })
                 ;
             }
-
-            function performAuthentication(username, token) {
-                 return fetch('/authenticate', {
-                    method: 'POST',
-                    headers: {
-                        'X-CSRF-TOKEN': token
-                    },
-                })
-                .then(response => response.json())
-                .then(function(request) {
-                    console.log('request succeeded with JSON response', request)
-                    
-                    return webauthn.getAssertion(request.publicKeyCredentialRequestOptions)
-                    .then(webauthn.responseToObject)
-                    .then(function (publicKeyCredential) { 
-                        console.log("publicKeyCredential ", publicKeyCredential);
-            
-                        url = '/authenticate/finish';
-                        return submitResponse(url, request.requestId, publicKeyCredential)
-                    })
-                    .catch(error => {
-                        console.log(error);
-                    })
-                    ;
-                })
-                .then(data => {
-                    if (data && data.success) {
-                        console.log("Success!");
-                        setStatus('Success!', false);
-                    } else {
-                        console.log("Error!");
-                        setStatus('Error!', true);
-                    }
-                    $('#takeAction').hide();
-                    return data;
-                })
-                .catch(error => {
-                    console.log(error);
-                })
-                ;
-            }
         </script>
     ```
 5. In the body section add the following UI to register a security key and get a handle on the username of the currently signed in user.
