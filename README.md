@@ -7,11 +7,11 @@ In this workshop you will build a simple web application that enables users to r
 If you'd rather see the end result without installing the dependencies and going through all the steps then do this _(requires docker)_:
 1. Clone the repo
    ```
-   git clone https://github.com/elukewalker/PasswordlessWorkshop
+   git clone https://github.com/YubicoLabs/java-webauthn-passwordless-workshop
    ```
 2. Build the docker image
    ```
-   build -t example/demo:latest PasswordlessWorkshop/4_Authentication/complete/.
+   build -t example/demo:latest java-webauthn-passwordless-workshop/4_Authentication/complete/.
    ```
 3. Run the image
    ```
@@ -30,6 +30,7 @@ You'll start with a java web application that secures access to a page with a lo
 
 ## What you'll need:
 * [Git](https://git-scm.com/)
+* [Docker](https://docs.docker.com/install/)
 * [JDK 1.8](https://www.oracle.com/technetwork/java/javase/downloads/index.html) or later
 * [Maven 3.2](https://maven.apache.org/download.cgi)+
 * FIDO2 Compatible browser
