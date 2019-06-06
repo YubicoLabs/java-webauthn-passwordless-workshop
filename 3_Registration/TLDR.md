@@ -3,7 +3,7 @@ Instructions to view the result of Module 3
 
 1. Go to the complete folder
 ```
-cd PasswordlessWorkshop/3_Registration/complete
+cd java-webauthn-passwordless-workshop/3_Registration/complete
 ```
 2. Build and run the web app
    * Java and Maven
