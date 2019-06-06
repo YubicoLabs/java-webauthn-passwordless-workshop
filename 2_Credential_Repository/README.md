@@ -84,7 +84,7 @@ We will be using some resources from the webauthn-server-demo in our project.
 <details>
 <summary><strong>Step-by-step instructions to get the resources</strong></summary><p>
 
-1. Verify you are in the  `PasswordlessWorkshop/initial` directory
+1. Verify you are in the  `java-webauthn-passwordless-workshop/initial` directory
 2. Open `getLibs.sh` or `getLibs.ps1` in your editor take a look at what it does
     1. First it clones the java-webauthn-server repo
     2. Next the webauthn-server-demo data and yubico packages are copied to the project
