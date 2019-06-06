@@ -38,13 +38,13 @@ Try from [Azure portal](https://portal.azure.com) using the Cloud Shell icon.
 Clone the workshop repository.
 
 ```
-git clone https://github.com/elukewalker/PasswordlessWorkshop
+git clone https://github.com/YubicoLabs/java-webauthn-passwordless-workshop
 ```
 
 ### Set the Active Spring Profile
 1. Change directory to the workshop
 ```
-cd PasswordlessWorkshop/initial
+cd java-webauthn-passwordless-workshop/initial
 ```
 2. Open `./src/main/resources/application.properties` in your preferred editor. _Note: Azure Cloud Shell has an [Integrated Cloud Shell Editor](https://docs.microsoft.com/en-us/azure/cloud-shell/using-cloud-shell-editor). Just run `code .`_
 3. Set the spring.profile.active to 'cloud' for cloud development or 'local' to configure the local server for SSL and save the file.
@@ -56,11 +56,11 @@ cd PasswordlessWorkshop/initial
 
 **Cannot find path**
 ```powershell
-PS Azure:\> cd PasswordlessWorkshop
-cd : Cannot find path 'Azure:/PasswordlessWorkshop/initial' because it does not exist.
+PS Azure:\> cd java-webauthn-passwordless-workshop
+cd : Cannot find path 'Azure:/java-webauthn-passwordless-workshop/initial' because it does not exist.
 ```
 
-Use `cd $HOME/PasswordlessWorkshop/initial` instead of `cd PasswordlessWorkshop/initial`
+Use `cd $HOME/java-webauthn-passwordless-workshop/initial` instead of `cd java-webauthn-passwordless-workshop/initial`
 
 </p></details>
 
