@@ -15,8 +15,8 @@ cd java-webauthn-passwordless-workshop/4_Authentication/complete
 
    * Docker
    ```
-   docker run -p 8443:8443 example/demo:module4
    docker build -t example/demo:module4 .
+   docker run -p 8443:8443 example/demo:module4
    ```
 
 3. Open `https://localhost:8443` and sign in with `user` and `password`
