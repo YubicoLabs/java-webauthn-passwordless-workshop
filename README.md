@@ -11,7 +11,7 @@ If you'd rather see the end result without installing the dependencies and going
    ```
 2. Build the docker image
    ```
-   build -t example/demo:latest java-webauthn-passwordless-workshop/4_Authentication/complete/.
+   docker build -t example/demo:latest java-webauthn-passwordless-workshop/4_Authentication/complete/.
    ```
 3. Run the image
    ```
