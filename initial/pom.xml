@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
 		<version>2.1.4.RELEASE</version>
-		<relativePath/> <!-- lookup parent from repository -->
+		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.example</groupId>
 	<artifactId>demo</artifactId>
@@ -69,10 +68,10 @@
 					<deploymentType>jar</deploymentType>
 
 					<appSettings>
-						<property> 
-							<name>JAVA_OPTS</name> 
-							<value>-Dserver.port=80</value> 
-						</property> 
+						<property>
+							<name>JAVA_OPTS</name>
+							<value>-Dserver.port=80</value>
+						</property>
 					</appSettings>
 
 					<!-- Web App information -->
@@ -82,6 +81,38 @@
 
 					<!-- Java Runtime Stack for Web App on Linux-->
 					<linuxRuntime>jre8</linuxRuntime>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>keytool-maven-plugin</artifactId>
+				<version>1.5</version>
+				<executions>
+					<execution>
+						<phase>generate-resources</phase>
+						<id>clean</id>
+						<goals>
+							<goal>clean</goal>
+						</goals>
+					</execution>
+					<execution>
+						<phase>generate-resources</phase>
+						<id>genkey</id>
+						<goals>
+							<goal>generateKeyPair</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<keystore>${project.build.directory}/classes/keystore/demo.p12</keystore>
+					<dname>cn=www.example.com, ou=None, L=Seattle, ST=Washington, o=ExampleOrg, c=US</dname>
+					<keypass>changeit</keypass>
+					<storepass>changeit</storepass>
+					<alias>demo</alias>
+					<keyalg>RSA</keyalg>
+					<keysize>2048</keysize>
+					<storetype>PKCS12</storetype>
+					<validity>3650</validity>
 				</configuration>
 			</plugin>
 		</plugins>
