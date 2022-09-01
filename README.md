@@ -60,7 +60,7 @@ See the diagram below for a depiction of the server architecture
 If you need more resources to understand WebAuthn and FIDO2 then
 * Read the [WebAuthn Developer Guide](https://developers.yubico.com/WebAuthn/WebAuthn_Developer_Guide/)
 * Review the [Java WebAuthn Server Library Code](https://github.com/Yubico/java-webauthn-server)
-* Watch the [Developer Videos](https://www.yubico.com/why-yubico/for-developers/developer-videos/)
+* Watch the [Developer Videos](https://www.youtube.com/playlist?list=PL1n2DPbVwGA3mS23rC5jm5jGTnbU4E60L)
 
 # Modules
 This workshop is split into multiple modules. Each module builds upon the previous module as you expand the application. You must complete each module before proceeding to the next.
