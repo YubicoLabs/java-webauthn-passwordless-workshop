@@ -270,7 +270,7 @@ Let's expose two REST endpoints to start and finish the WebAuthn authentication 
 * After the assertion is verified, authenticate the user's session
 
 ## Next
-Congratulations! You've completed the passwordless workshop. We hope that this time has been valuable for you. For further learning on this topic, please see [Yubico's developer site](https://develoers.yubico.com/FIDO2).
+Congratulations! You've completed the passwordless workshop. We hope that this time has been valuable for you. For further learning on this topic, please see [Yubico's developer site](https://developers.yubico.com/FIDO2).
 
 Please remember to run through the [Clean up steps](../5_Clean_Up/README.md) to ensure you decommission all resources spun up during the workshop today.
 
